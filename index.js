@@ -30,19 +30,32 @@ async function run() {
         // Send a ping to confirm a successful connection
         const productCollection = client.db('productDB').collection('product');
         const userCollection = client.db('productDB').collection('user');
+        const brandCollection = client.db('brandDB').collection('brand');
 
         app.get('/addproduct', async (req, res) => {
             const cursor = productCollection.find();
             const result = await cursor.toArray();
             res.send(result);
-            
+
         })
+
+        app.get('/brand', async (req, res) => {
+            const cursor = brandCollection.find();
+            const result = await cursor.toArray();
+            console.log("data is :", result)
+            res.send(result);
+        })
+      
+
         app.post('/addproduct', async (req, res) => {
             const newProduct = req.body;
             console.log(newProduct);
             const result = await productCollection.insertOne(newProduct);
             res.send(result);
         })
+        
+
+
     } finally {
         // Ensures that the client will close when you finish/error
         //await client.close();
